@@ -43,3 +43,56 @@ script:
 
 ## Example Repository
 https://github.com/mlp6/unit_test_example
+
+# Unit Testing & Continuous Integration II
+## Robust Unit Testing
+Expanding on the basic idea of testing units of code from last class, we should take some time to consider common ways to write robust unit tests. Generally, tests should cover a wide variety of inputs your "unit" will receive including "bad" inputs (for example, if you were expecting an integer, what happens when someone passes your code a float?). Code written with tests that only test expected use cases will usually fail in unexpected ways in production.
+
+### Bad Inputs
+
+
+## Parametrized Testing
+It is often helpful to run a test over many different input and exepcted output combinations. `pytest` provides a tool to streamline that process--a decorator called `parametrize`. We will talk more about [decorators](https://www.python-course.eu/python3_decorators.php) later in this class, but they allow your python functions to be augmented (or "decorated") with some additional functionality. The `parametrize` decorator lets us run a test function many times with different inputs and outputs.
+
+We'll go over this more in class, but a simple example is below:
+
+Here's a basic function we want to test:
+
+```py
+def add(a, b):
+    return a + b
+```
+
+And here's a test that tests against many input and expected output combinations:
+```py
+@pytest.mark.parametrize("a,b,expected", [
+    (1, 2, 3),
+    (2, 3, 5),
+    (5, 5, 10),
+])
+def test_add_parametrize(a, b, expected):
+    """
+    test_add_parametrize is called with all of the input & expected output
+    combinations specified in the decorator above.
+    """
+    assert add(a, b) == expected
+```
+
+We can break this down further:
+```py
+@pytest.mark.parametrize("a,b,expected", [
+    (1, 2, 3),
+    (2, 3, 5),
+    (5, 5, 10),
+])
+```
+This part of the code is the "decorator." When the python intrepreter runs this, it knows to augment the function below in a certain way--in this case, it knows to essentially copy the test function below the decorator 3 times and call it 3 times with each set of inputs defined in the list.
+
+Notice the decorator function takes two arguments. A string `"a,b,expected"` and a list of tuples `[(1, 2, 3), (2, 3, 5), ...]`. 
+
+The string must match the named input parameters of your function, which you can see in the function definition (`def test_add_parametrize(a, b, expected):`).
+
+The list of tuples is the list of input & expected output arguments to call the test function with. Each set of arguments is treated as a seperate test case by pytest when you run pytest.
+
+You can see a live example of this working code and play around with it yourself [here](unit_testing/)
+
