@@ -50,6 +50,17 @@ Expanding on the basic idea of testing units of code from last class, we should 
 
 ### Bad Inputs
 
+Here's a basic example: let's say you have a function that checks that two fruits are the same:
+```py
+def is_same_fruit(a, b):
+  return a == b
+```
+
+What happens when a user types in `" apple"` and you are comparing it to `"apple"` in your code? You should have a test that ensures your `is_same_fruit` function works properly in this scenario. 
+
+Generally you want to ensure that your code will actually behave the way you want it to, even when given odd inputs. You should think about what should happen when your code gets different input types than you were expecting, or inputs that have mistakes (e.g. if you expect a list of numbers, what should happen when you get `[1, 2, 3, "4", "hello"]` as an input? 
+
+We will talk more about handling errors ("exceptions" in python) in the future, but for now you should know that unit testing helps ensure your code behaves well even under odd inputs. 
 
 ## Parametrized Testing
 It is often helpful to run a test over many different input and exepcted output combinations. `pytest` provides a tool to streamline that process--a decorator called `parametrize`. We will talk more about [decorators](https://www.python-course.eu/python3_decorators.php) later in this class, but they allow your python functions to be augmented (or "decorated") with some additional functionality. The `parametrize` decorator lets us run a test function many times with different inputs and outputs.
